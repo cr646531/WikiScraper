@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const cheerio = require('cheerio');
-const { createQueue } = require('./funcs.js');
+
+const funcs = require('./funcs');
+const { createQueue, setNextUrl } = funcs.helperFuncs;
 
 module.exports = app;
 
@@ -36,6 +38,8 @@ app.get('/links', async (req, res) => {
     // use the paragraphs array to find the links and add them to the queue
     temp = createQueue(paragraphs, startUrl);
     startQueue = startQueue.concat(temp);
+
+
 
     // grab the html for the destination page
     var $ = await fetchData(endUrl);

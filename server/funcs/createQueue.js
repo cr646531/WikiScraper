@@ -1,4 +1,3 @@
-
 function createQueue(paragraphs, url) {
 
     var queue = [];
@@ -36,6 +35,4 @@ function createQueue(paragraphs, url) {
     return queue;
 }
 
-module.exports = {
-    createQueue
-}
+module.exports = createQueue;
