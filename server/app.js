@@ -3,7 +3,7 @@ const app = express();
 const axios = require('axios');
 const cheerio = require('cheerio');
 const funcs = require('./funcs');
-const { createQueue, setNextUrl } = funcs.helperFuncs;
+const { createQueue, setNextUrl, findPath, generateOutput } = funcs.helperFuncs;
 
 module.exports = app;
 
@@ -22,18 +22,23 @@ app.get('/', async (req, res) => {
 
 app.get('/links', async (req, res) => {
 
+    var startUrl = '/wiki/History';
+    var endUrl = '/wiki/Physics';
+
     var start = {
         page: 'start',
-        url: 'https://en.wikipedia.org/wiki/History',
+        url: `https://en.wikipedia.org${startUrl}`,
         queue: [],
-        visited: []
+        visited: [],
+        path: []
     };
 
     var end = {
         page: 'end',
-        url: 'https://en.wikipedia.org/wiki/Physics',
+        url: `https://en.wikipedia.org${endUrl}`,
         queue: [],
-        visited: []
+        visited: [],
+        path: []
     }
 
     var temp;
@@ -62,18 +67,23 @@ app.get('/links', async (req, res) => {
         }
 
         // check to see if the link is in the other queue 
-        check = curr.queue.find(element => element[1] == next[1]);
+        var commonPage = curr.queue.find(element => element[1] == next[1]);
 
         // if the link was in the end queue, then we have discovered a common path
-        if(check){
-            console.log(`\n\n\n\n${check}`);
+        if(commonPage){
+            console.log(`\n\n\n\n${commonPage}\n\n\n\n`);
             // break the loop - we have finished traversing pages
             flag = false;
         }
         
     }
 
+    var startPath = findPath(commonPage, startUrl, start);
+    var endPath = findPath(commonPage, endUrl, end);
+
+    var output = generateOutput(startUrl, endUrl, startPath, endPath);
+
     
-    res.send('done');
+    res.send(output);
 
 });
