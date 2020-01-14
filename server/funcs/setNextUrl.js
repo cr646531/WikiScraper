@@ -1,4 +1,4 @@
-function setNextUrl(queueOne, visited) {
+function setNextUrl(curr) {
 
     var flag = 1;
     var next;
@@ -6,24 +6,18 @@ function setNextUrl(queueOne, visited) {
 
     // find the next link that has NOT already been visited
     while(flag) {
-        next = queueOne.shift();
-        flag = visited.find(element => element[1] == next[1]);
+        next = curr.queue.shift();
+        flag = curr.visited.find(element => element[1] == next[1]);
     }
 
     // add this link to the array of visited sites so we don't go there again
-    visited.push(next);
+    curr.visited.push(next);
     console.log(next);
 
     // set the next URL to be visited
-    url = 'https://en.wikipedia.org' + next[1];
+    curr.url = 'https://en.wikipedia.org' + next[1];
 
-    var output = {
-        queue: queue,
-        visited: visited,
-        url: url
-    }
-
-    return output;
+    return next;
 }
 
 module.exports = setNextUrl;
