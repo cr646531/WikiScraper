@@ -1,11 +1,19 @@
+const path = require('path');
 const express = require('express');
 const app = express();
+app.use(require('body-parser').json());
 const axios = require('axios');
 const cheerio = require('cheerio');
 const funcs = require('./funcs');
 const { createQueue, setNextUrl, findPath, generateOutput } = funcs.helperFuncs;
 
 module.exports = app;
+
+/* Set The Path */
+
+app.use('/dist', express.static(path.join(__dirname, '../dist')));
+
+const index = path.join(__dirname, '../index.html');
 
 /* Helper Function */
 
@@ -16,9 +24,7 @@ const fetchData = async (url) => {
 
 /* Routes */
 
-app.get('/', async (req, res) => {
-    res.send('test');
-});
+app.get('/', (req, res)=> res.sendFile(index));
 
 app.get('/links', async (req, res) => {
 
@@ -86,4 +92,20 @@ app.get('/links', async (req, res) => {
     
     res.send(output);
 
+});
+
+app.get('/link/:wiki', async (req, res) => {
+
+    var destination = `https://en.wikipedia.org/wiki/${req.params.wiki}`;
+
+    // grab the html for the start page
+    var $ = await fetchData(destination);
+
+    // create array of all the paragraphs on the page
+    var paragraphs = $('p', '.mw-parser-output');
+
+    // use the paragraphs array to find the links and add them to the queue
+    var links = createQueue(paragraphs, destination);
+
+    res.send(links);
 });
