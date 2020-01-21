@@ -6,6 +6,8 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const funcs = require('./funcs');
 const { createQueue, setNextUrl, findPath, generateOutput } = funcs.helperFuncs;
+const db = require('./db');
+const { Link } = db.models;
 
 module.exports = app;
 
@@ -89,6 +91,7 @@ app.get('/links', async (req, res) => {
 
     var output = generateOutput(startUrl, endUrl, startPath, endPath);
 
+
     
     res.send(output);
 
@@ -106,6 +109,10 @@ app.get('/link/:wiki', async (req, res) => {
 
     // use the paragraphs array to find the links and add them to the queue
     var links = createQueue(paragraphs, destination);
+
+    for(var i = 0; i < links.length; i++){
+        Link.create({ title: links[i][0], href: links[i][1], parent: links[i][2] });
+    }
 
     res.send(links);
 });

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack",
     "build": "npm run webpack -- --watch --mode=development",
-    "start:dev": "npm run build & nodemon ./server/index.js --ignore dist --ignore src"
+    "start:dev": "npm run build & DATABASE_URL=postgres://localhost/wiki nodemon ./server/index.js --ignore dist --ignore src"
   },
   "repository": {
     "type": "git",
@@ -25,9 +25,11 @@
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "nodemon": "^2.0.2",
+    "pg": "^7.17.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "sequelize": "^5.21.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
