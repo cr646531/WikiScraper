@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setCurr } from './store';
+import { setCurr, loadLinks } from './store';
 
 class App extends Component {
 
@@ -19,7 +19,7 @@ class App extends Component {
 
     onSave(ev) {
         ev.preventDefault();
-        this.props.setCurr(this.state.href);
+        this.props.loadLinks(this.state.href);
     }
 
     render() {
@@ -35,6 +35,17 @@ class App extends Component {
                     <input name="href" value={href} onChange={this.onChange} />
                     <button>Search</button>
                 </form>
+                <br />
+                <hr />
+                <br />
+                <br />
+                <ul>
+                    {
+                        this.props.links.map(link => (
+                            <li key={link[3]}>{link[0]}</li>
+                        ))
+                    }
+                </ul>
             </div>
         )
     }
@@ -42,16 +53,17 @@ class App extends Component {
 
 const mapDispatchToProps = (dispatch)=> {
     return {
-        setCurr: (curr)=> dispatch(setCurr(curr))
+        setCurr: (curr)=> dispatch(setCurr(curr)),
+        loadLinks: (link)=> dispatch(loadLinks(link))
     };
 };
 
-// const mapStateToProps = ({ users })=> {
-//     return {
-//         users 
-//     };
-// };
+const mapStateToProps = ({ links })=> {
+    return {
+        links 
+    };
+};
   
-// export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-export default connect(null, mapDispatchToProps)(App);
+// export default connect(null, mapDispatchToProps)(App);

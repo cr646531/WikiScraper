@@ -43,9 +43,10 @@ const _loadLinks = (links) => ({
     links
 });
 
-const loadLinks = () => {
+const loadLinks = (link) => {
     return (dispatch) => {
-        return axios.get(`/links/${curr}`)
+        return axios.get(`/link/${link}`)
+        //return axios.get(`/testing`)
             .then(res => res.data)
             .then(links => dispatch(_loadLinks(links)))
     }
