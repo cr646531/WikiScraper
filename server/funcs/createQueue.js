@@ -18,6 +18,7 @@ function createQueue(paragraphs, url) {
                 if(curr.name == 'a') {
 
                     if(curr.attribs.title){
+                        
                         // definitions begin with "wikt" in their title
                         // portal links begin with "Portal" in their title
                         // redirects have a special class

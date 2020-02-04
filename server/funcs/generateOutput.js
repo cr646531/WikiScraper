@@ -1,4 +1,5 @@
 function generateOutput(startUrl, endUrl, startPath, endPath) {
+    
     // generate the ouput to send to the page
 
     var start = startUrl.slice(6);
